@@ -1,4 +1,4 @@
-version: '3'
+version: "3"
 services:
   mlflow:
     image: mlflow
@@ -7,7 +7,7 @@ services:
       - "5000:5000"
     volumes:
       - ./mlruns:/mlruns
-    command: mlflow server --host 0.0.0.0 --port 5000
+    command: mlflow server --host localhost --port 5000
     networks:
       - airflow-mlflow-network
 
@@ -67,6 +67,28 @@ services:
       - POSTGRES_DB=airflow
     volumes:
       - postgres-db-volume:/var/lib/postgresql/data
+    networks:
+      - airflow-mlflow-network
+
+  streamlit-app:
+    build:
+      context: .
+      dockerfile: Dockerfile-streamlit
+    ports:
+      - "8501:8501"
+    depends_on:
+      - mlflow
+    volumes:
+      - .:/app
+    networks:
+      - airflow-mlflow-network
+
+  train-model:
+    build:
+      context: .
+      dockerfile: Dockerfile-train
+    depends_on:
+      - mlflow
     networks:
       - airflow-mlflow-network
 
