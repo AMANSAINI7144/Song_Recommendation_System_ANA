@@ -91,4 +91,4 @@ if st.button("Get Recommendations"):
         else:
             st.write(f"No songs found for the selected genres: {', '.join(selected_genres)}")
 
-st.write("Developed by Ravinthiran - Music Recommendation System")
+st.write("Developed by ANA - Music Recommendation System")
